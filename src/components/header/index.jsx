@@ -33,18 +33,6 @@ export const Header = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {/* <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup> */}
       <AppBar position='fixed' >
         <Toolbar>
           <IconButton
@@ -59,9 +47,9 @@ export const Header = () => {
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
             Posts
           </Typography>
-          <Button size="medium" color='success'
+          <Button size="small" color="inherit" position="fixed" variant="outlined"
             onClick={() => {
-              console.log('Есть контакт');;
+              console.log('Есть контакт');
             }} >Add Post</Button>
           {auth && (
             <div>

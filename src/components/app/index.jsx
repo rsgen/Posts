@@ -7,8 +7,7 @@ import { Header } from '../header';
 import { Footer } from '../footer';
 import { PostList } from '../post-list';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
-// const titleGlobalStyles = <GlobalStyles styles={{ h1: { color: 'grey' } }} />
+import { MyPagination } from '../pagination';
 
 const darkTheme = createTheme({
     palette: {
@@ -25,6 +24,7 @@ export const App = () => {
                 <Container>
                     <Header />
                     <PostList posts={postData} />
+                    <MyPagination />
                 </Container>
                 <Footer />
             </ThemeProvider>
