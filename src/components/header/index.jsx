@@ -6,18 +6,15 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Button } from '@mui/material';
-import zIndex from '@mui/material/styles/zIndex';
 
-export const Header = () => {
+
+
+export const Header = ({ user }) => {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -32,7 +29,7 @@ export const Header = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 2 }}>
       <AppBar position='fixed' >
         <Toolbar>
           <IconButton
@@ -47,10 +44,14 @@ export const Header = () => {
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
             Posts
           </Typography>
-          <Button size="small" color="inherit" position="fixed" variant="outlined"
+          <Button size="small" color="inherit" variant="outlined" sx={{ marginRight: "50px" }}
             onClick={() => {
               console.log('Есть контакт');
-            }} >Add Post</Button>
+            }} >Add Post
+          </Button>
+          <Typography mr={3}>
+            {user?.name}<br />{user?.email}
+          </Typography>
           {auth && (
             <div>
               <IconButton
@@ -78,14 +79,13 @@ export const Header = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Change user info</MenuItem>
               </Menu>
             </div>
           )}
         </Toolbar>
       </AppBar>
-      <Toolbar />
     </Box>
   );
 }
