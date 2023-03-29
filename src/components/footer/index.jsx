@@ -4,7 +4,7 @@ export const Footer = () => {
   const year = new Date().getFullYear();
 
   const Footer = styled.section`
-  margin: 80px;
+  margin: 30px;
   bottom: 0;
   left: 0;
   right: 0;

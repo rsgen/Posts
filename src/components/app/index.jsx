@@ -1,11 +1,9 @@
-import { Delete as DeleteIcon, RestoreFromTrash as RestoreFromTrashIcon } from '@mui/icons-material';
-import { Container } from '@mui/material'
+import { Container, Pagination, Stack } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline';
 import { Header } from '../header';
 import { Footer } from '../footer';
 import { PostList } from '../post-list';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { MyPagination } from '../pagination';
 import api from '../../utils/api';
 import { useState, useEffect } from 'react';
 import { isLiked } from '../../utils/posts';
@@ -18,7 +16,9 @@ const darkTheme = createTheme({
 
 export const App = () => {
     const [posts, setPosts] = useState([]);
-    const [currentUser, setCurrentUser] = useState(null)
+    const [currentUser, setCurrentUser] = useState(null);
+    const [page, setPage] = useState(1);
+    const [pageQty, setPageQty] = useState(0);
 
     function handleUpdateUser(dataUserUpdate) {
         api.setUserInfo(dataUserUpdate)
@@ -50,13 +50,14 @@ export const App = () => {
     }
 
     useEffect(() => {
-        api.getAllInfo()
+        api.getPaginateInfo(page)
             .then(([postsData, userInfoData]) => {
                 setCurrentUser(userInfoData);
-                setPosts(postsData);
+                setPosts(postsData.posts);
+                setPageQty(Math.ceil((postsData.total) / 12))
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [page])
 
     return (
         <>
@@ -69,7 +70,25 @@ export const App = () => {
                         currentUser={currentUser}
                         onDelete={handlePostDelete}
                     />
-                    <MyPagination />
+                    <Stack spacing={2}>
+                        {!!pageQty && (
+                            <Pagination
+                                count={pageQty}
+                                page={page}
+                                onChange={(_, num) => {
+                                    window.scroll({
+                                        top: 0,
+                                        left: 0,
+                                        behavior: "instant"
+                                    });
+                                    setPage(num);
+                                }}
+                                showFirstButton
+                                showLastButton
+                                sx={{ marginY: 7, marginX: 'auto' }}
+                            />
+                        )}
+                    </Stack>
                 </Container>
                 <Footer />
             </ThemeProvider>

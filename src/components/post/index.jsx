@@ -6,13 +6,23 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ru';
 import { isLiked } from '../../utils/posts';
-import { color } from '@mui/system';
-import { Delete as DeleteIcon, RestoreFromTrash as RestoreFromTrashIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
 dayjs.locale('ru');
 dayjs.extend(relativeTime)
 
-export const Post = ({ image, title, text, created_at, author, likes, _id, onPostLike, onDelete, currentUser }) => {
+export const Post = ({
+    image,
+    title,
+    text,
+    created_at,
+    author,
+    likes,
+    _id,
+    onPostLike,
+    onDelete,
+    currentUser
+}) => {
     const [expanded, setExpanded] = useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -20,6 +30,7 @@ export const Post = ({ image, title, text, created_at, author, likes, _id, onPos
 
     const like = isLiked(likes, currentUser?._id)
     const canDelete = currentUser?._id === author._id
+    const shortName = author.name.split(" ", 2)
 
     function handleClickButtonLike() {
         onPostLike({ likes, _id })
@@ -46,7 +57,7 @@ export const Post = ({ image, title, text, created_at, author, likes, _id, onPos
                             <DeleteIcon />
                         </IconButton>)
                     }
-                    title={author.name}
+                    title={shortName.join(" ")}
                     subheader={dayjs(created_at).fromNow()}
                 />
                 <CardMedia

@@ -14,6 +14,10 @@ class Api {
         return Promise.all([this.getPostsList(), this.getUserInfo()])
     }
 
+    getPaginateInfo(page) {
+        return Promise.all([this.getPaginate(page), this.getUserInfo()])
+    }
+
     getPostsList() {
         return fetch(`${this.#baseurl}/posts`, {
             headers: this.#headers
@@ -72,6 +76,14 @@ class Api {
     getInfoPost(postID) {
         return Promise.all([this.getPostById(postID), this.getUserInfo()])
     }
+
+    getPaginate(page) {
+        return fetch(`${this.#baseurl}/posts/paginate?page=${page}&limit=12`, {
+            headers: this.#headers
+        })
+            .then(this.#onResponse)
+    }
+
 }
 
 
