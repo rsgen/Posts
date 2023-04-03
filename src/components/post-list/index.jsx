@@ -1,12 +1,19 @@
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2'
-import React from 'react'
-import { Post } from '../post'
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React from "react";
+import { Post } from "../post";
 
-
-export const PostList = ({ list, onPostLike, onDelete, currentUser }) => {
-    return (
-        <Grid2 container spacing={4} sx={{ marginTop: 8 }}>
-            {list.map(item => <Post key={item._id} {...item} onPostLike={onPostLike} onDelete={onDelete} currentUser={currentUser} />)}
-        </Grid2>
-    )
-}
+export const PostList = ({ list, onPostLike, onDelete }) => {
+  return (
+    <Grid2 container spacing={4} sx={{ marginTop: 8 }}>
+      {list.map((item) => (
+        <Post
+          key={item._id}
+          {...item}
+          onPostLike={onPostLike}
+          onDelete={onDelete}
+          heightImg={194}
+        />
+      ))}
+    </Grid2>
+  );
+};

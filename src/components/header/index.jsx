@@ -1,20 +1,21 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { Button } from '@mui/material';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import { Button } from "@mui/material";
+import { UserContext } from "../../contexts/current-user-conext";
+import { useContext } from "react";
+import { useState } from "react";
 
-
-
-export const Header = ({ user }) => {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export const Header = () => {
+  const currentUser = useContext(UserContext);
+  const [auth, setAuth] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -30,27 +31,31 @@ export const Header = ({ user }) => {
 
   return (
     <Box sx={{ flexGrow: 2 }}>
-      <AppBar position='fixed' >
+      <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+          <Typography
+            variant="h4"
+            color="white"
+            component="div"
+            sx={{ flexGrow: 1 }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
             Posts
           </Typography>
-          <Button size="small" color="inherit" variant="outlined" sx={{ marginRight: "50px" }}
+          <Button
+            size="small"
+            color="inherit"
+            variant="outlined"
+            sx={{ marginRight: "50px" }}
             onClick={() => {
-              console.log('Есть контакт');
-            }} >Add Post
+              console.log("Есть контакт");
+            }}
+          >
+            Add Post
           </Button>
           <Typography mr={3}>
-            {user?.name}<br />{user?.email}
+            {currentUser?.name}
+            <br />
+            {currentUser?.email}
           </Typography>
           {auth && (
             <div>
@@ -68,13 +73,13 @@ export const Header = ({ user }) => {
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
@@ -88,4 +93,4 @@ export const Header = ({ user }) => {
       </AppBar>
     </Box>
   );
-}
+};
