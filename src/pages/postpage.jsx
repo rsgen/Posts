@@ -6,7 +6,8 @@ import { Post } from "../components/post";
 import { UserContext } from "../contexts/current-user-conext";
 import api from "../utils/api";
 import { isLiked } from "../utils/posts";
-import { NotFoundPage } from "./notfound";
+
+import { NotFoundPage } from "./notfoundpage";
 
 export const PostPage = ({
   handlePostLike,

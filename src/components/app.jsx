@@ -9,7 +9,7 @@ import { isLiked } from "../utils/posts";
 import { MainPage } from "../pages/mainpage";
 import { PostPage } from "../pages/postpage";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { NotFoundPage } from "../pages/notfound";
+import { NotFoundPage } from "../pages/notfoundpage";
 import { UserContext } from "../contexts/current-user-conext";
 
 const darkTheme = createTheme({
