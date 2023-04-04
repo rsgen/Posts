@@ -1,5 +1,6 @@
 import { Pagination, Stack } from "@mui/material";
-import { PostList } from "../../components/post-list";
+import { PostList } from "../components/postlist";
+
 
 export const MainPage = ({
   posts,

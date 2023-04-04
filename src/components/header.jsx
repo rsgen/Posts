@@ -8,7 +8,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Button } from "@mui/material";
-import { UserContext } from "../../contexts/current-user-conext";
+import { UserContext } from "../contexts/current-user-conext";
 import { useContext } from "react";
 import { useState } from "react";
 
