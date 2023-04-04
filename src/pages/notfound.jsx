@@ -1,14 +1,5 @@
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import {
-  Button,
-  Card,
-  Container,
-  Grid,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { padding } from "@mui/system";
+import { Card, Grid, Typography } from "@mui/material";
 
 export const NotFoundPage = () => {
   return (
