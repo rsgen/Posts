@@ -1,16 +1,16 @@
 import { Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Header } from "../header";
-import { Footer } from "../footer";
+import { Header } from "./header";
+import { Footer } from "./footer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import api from "../../utils/api";
+import api from "../utils/api";
 import { useState, useEffect } from "react";
-import { isLiked } from "../../utils/posts";
-import { MainPage } from "../../pages/main-page";
-import { PostPage } from "../../pages/post-page";
+import { isLiked } from "../utils/posts";
+import { MainPage } from "../pages/mainpage";
+import { PostPage } from "../pages/postpage";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { NotFoundPage } from "../../pages/not-found-page";
-import { UserContext } from "../../contexts/current-user-conext";
+import { NotFoundPage } from "../pages/notfound";
+import { UserContext } from "../contexts/current-user-conext";
 
 const darkTheme = createTheme({
   palette: {

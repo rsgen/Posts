@@ -18,10 +18,10 @@ import { useContext, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ru";
-import { isLiked } from "../../utils/posts";
+import { isLiked } from "../utils/posts";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../contexts/current-user-conext";
+import { UserContext } from "../contexts/current-user-conext";
 
 dayjs.locale("ru");
 dayjs.extend(relativeTime);

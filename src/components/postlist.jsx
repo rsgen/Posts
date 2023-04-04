@@ -1,6 +1,6 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React from "react";
-import { Post } from "../post";
+import { Post } from "./post";
 
 export const PostList = ({ list, onPostLike, onDelete }) => {
   return (

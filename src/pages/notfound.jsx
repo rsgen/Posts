@@ -19,6 +19,7 @@ export const NotFoundPage = () => {
           flexDirection: "column",
           alignItems: "center",
           padding: "20px",
+          margin: "50px",
         }}
       >
         <Typography variant="h1">

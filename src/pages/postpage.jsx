@@ -2,11 +2,11 @@ import { Button, Container, Toolbar } from "@mui/material";
 import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Post } from "../../components/post";
-import { UserContext } from "../../contexts/current-user-conext";
-import api from "../../utils/api";
-import { isLiked } from "../../utils/posts";
-import { NotFoundPage } from "../not-found-page";
+import { Post } from "../components/post";
+import { UserContext } from "../contexts/current-user-conext";
+import api from "../utils/api";
+import { isLiked } from "../utils/posts";
+import { NotFoundPage } from "./notfound";
 
 export const PostPage = ({
   handlePostLike,
