@@ -10,7 +10,6 @@ import { isLiked } from "../utils/posts";
 import { NotFoundPage } from "./notfoundpage";
 
 export const PostPage = ({
-  handlePostLike,
   handlePostDelete,
   navigate,
   setRefresh,

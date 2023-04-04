@@ -85,7 +85,6 @@ export const App = () => {
               path="/postpage/:postID"
               element={
                 <PostPage
-                  handlePostLike={handlePostLike}
                   handlePostDelete={handlePostDelete}
                   navigate={navigate}
                   setRefresh={setRefresh}
