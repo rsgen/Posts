@@ -32,6 +32,14 @@ class Api {
     }).then(this.#onResponse);
   }
 
+  editPost({ _id, title, text, image, tags }) {
+    return fetch(`${this.#baseurl}/posts/${_id}`, {
+      method: "PATCH",
+      headers: this.#headers,
+      body: JSON.stringify({ title, text, image, tags }),
+    }).then(this.#onResponse);
+  }
+
   deletePost(postID) {
     return fetch(`${this.#baseurl}/posts/${postID}`, {
       method: "DELETE",
