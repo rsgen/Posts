@@ -11,6 +11,7 @@ import { NotFoundPage } from "./notfoundpage";
 
 export const PostPage = ({
   handlePostDelete,
+  handlePostEdit,
   navigate,
   setRefresh,
 }) => {
@@ -35,7 +36,7 @@ export const PostPage = ({
       .catch((err) => {
         setErrorState(err);
       });
-  }, []);
+  }, [postID]);
 
   return (
     <>
@@ -44,7 +45,7 @@ export const PostPage = ({
       <Container>
         <Button
           onClick={() => {
-            navigate(-1);
+            navigate("/");
             setRefresh((refresh) => !refresh);
           }}
           variant="outlined"
@@ -59,6 +60,7 @@ export const PostPage = ({
             {...post}
             onPostLike={handlePostLike}
             onDelete={handlePostDelete}
+            onEdit={handlePostEdit}
             heightImg={"auto"}
           />
         )}

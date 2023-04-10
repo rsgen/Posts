@@ -5,6 +5,7 @@ export const MainPage = ({
   posts,
   handlePostLike,
   handlePostDelete,
+  handlePostEdit,
   page,
   pageQty,
   setPage,
@@ -15,6 +16,7 @@ export const MainPage = ({
         list={posts}
         onPostLike={handlePostLike}
         onDelete={handlePostDelete}
+        onEdit={handlePostEdit}
       />
       <Stack spacing={2}>
         {!!pageQty && (

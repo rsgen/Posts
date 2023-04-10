@@ -26,12 +26,6 @@ export const App = () => {
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(true);
 
-  function handleUpdateUser(dataUserUpdate) {
-    api.setUserInfo(dataUserUpdate).then((dataServer) => {
-      setCurrentUser(dataServer);
-    });
-  }
-
   function handlePostLike(post) {
     const like = isLiked(post.likes, currentUser._id);
     api.changeLikePostStatus(post._id, like).then((updatePost) => {
@@ -43,10 +37,25 @@ export const App = () => {
   }
 
   function handlePostDelete(post) {
-    api.deletePost(post._id).then((updatePost) => {
-      navigate(-1);
+    api.deletePost(post._id).then(() => {
+      navigate("/");
       setRefresh((refresh) => !refresh);
     });
+  }
+
+  function handlePostEdit(newData) {
+    api.editPost(newData).then(() => {
+      navigate("/");
+      setRefresh((refresh) => !refresh);
+    });
+  }
+
+  function handlePostAdd(data) {
+    api
+      .addPost(data)
+      .then(() =>
+        page === 1 ? setRefresh((refresh) => !refresh) : setPage(1)
+      );
   }
 
   useEffect(() => {
@@ -65,7 +74,7 @@ export const App = () => {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container>
-          <Header />
+          <Header onAdd={handlePostAdd} />
           <Routes>
             <Route
               path="/"
@@ -74,6 +83,7 @@ export const App = () => {
                   posts={posts}
                   handlePostLike={handlePostLike}
                   handlePostDelete={handlePostDelete}
+                  handlePostEdit={handlePostEdit}
                   page={page}
                   pageQty={pageQty}
                   setPage={setPage}
@@ -86,6 +96,7 @@ export const App = () => {
               element={
                 <PostPage
                   handlePostDelete={handlePostDelete}
+                  handlePostEdit={handlePostEdit}
                   navigate={navigate}
                   setRefresh={setRefresh}
                 />
