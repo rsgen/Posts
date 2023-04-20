@@ -12,19 +12,21 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { NotFoundPage } from "../pages/notfoundpage";
 import { UserContext } from "../contexts/current-user-conext";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
-
 export const App = () => {
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState();
   const [page, setPage] = useState(1);
   const [pageQty, setPageQty] = useState(0);
+  const [postsQty, setPostsQty] = useState(0);
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(true);
+  const [theme, setTheme] = useState(
+    createTheme({
+      palette: {
+        mode: "dark",
+      },
+    })
+  );
 
   function handlePostLike(post) {
     const like = isLiked(post.likes, currentUser._id);
@@ -58,6 +60,30 @@ export const App = () => {
       );
   }
 
+  function handleChangeTheme() {
+    let newTheme = {};
+    if (theme.palette.mode === "dark") {
+      newTheme = createTheme({
+        palette: {
+          mode: "light",
+        },
+      });
+      setTheme(newTheme);
+    } else {
+      newTheme = createTheme({
+        palette: {
+          mode: "dark",
+        },
+      });
+      setTheme(newTheme);
+    }
+  }
+
+  function handleClickPost() {
+    navigate("/");
+    page === 1 ? setRefresh((refresh) => !refresh) : setPage(1);
+  }
+
   useEffect(() => {
     api
       .getPaginateInfo(page)
@@ -65,16 +91,22 @@ export const App = () => {
         setCurrentUser(userInfoData);
         setPosts(postsData.posts);
         setPageQty(Math.ceil(postsData.total / 12));
+        setPostsQty(postsData.total);
       })
       .catch((err) => console.log(err));
   }, [page, refresh]);
 
   return (
     <UserContext.Provider value={currentUser}>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container>
-          <Header onAdd={handlePostAdd} />
+          <Header
+            onAdd={handlePostAdd}
+            handleChangeTheme={handleChangeTheme}
+            theme={theme}
+            handleClickPost={handleClickPost}
+          />
           <Routes>
             <Route
               path="/"
@@ -86,6 +118,7 @@ export const App = () => {
                   handlePostEdit={handlePostEdit}
                   page={page}
                   pageQty={pageQty}
+                  postsQty={postsQty}
                   setPage={setPage}
                   navigate={navigate}
                 />

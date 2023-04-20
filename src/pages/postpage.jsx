@@ -1,4 +1,4 @@
-import { Button, Container, Toolbar } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -6,7 +6,6 @@ import { Post } from "../components/post";
 import { UserContext } from "../contexts/current-user-conext";
 import api from "../utils/api";
 import { isLiked } from "../utils/posts";
-
 import { NotFoundPage } from "./notfoundpage";
 
 export const PostPage = ({
@@ -40,31 +39,36 @@ export const PostPage = ({
 
   return (
     <>
-      <Toolbar />
-      <Toolbar />
       <Container>
-        <Button
-          onClick={() => {
-            navigate("/");
-            setRefresh((refresh) => !refresh);
-          }}
-          variant="outlined"
-          size="small"
-          color="inherit"
-          sx={{ marginBottom: 2 }}
-        >
-          Back
-        </Button>
-        {!errorState && (
-          <Post
-            {...post}
-            onPostLike={handlePostLike}
-            onDelete={handlePostDelete}
-            onEdit={handlePostEdit}
-            heightImg={"auto"}
-          />
+        <Box mb={3} marginTop={10}>
+          {!errorState && (
+            <Post
+              {...post}
+              onPostLike={handlePostLike}
+              onDelete={handlePostDelete}
+              onEdit={handlePostEdit}
+              heightImg={"auto"}
+            />
+          )}
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          {!errorState && (
+            <Button
+              onClick={() => {
+                navigate("/");
+                setRefresh((refresh) => !refresh);
+              }}
+              variant="outlined"
+              size="small"
+              color="inherit"
+            >
+              Back
+            </Button>
+          )}
+        </Box>
+        {errorState && (
+          <NotFoundPage navigate={navigate} setRefresh={setRefresh} />
         )}
-        {errorState && <NotFoundPage />}
       </Container>
     </>
   );

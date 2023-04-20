@@ -1,6 +1,7 @@
 import {
   ExpandMore as ExpandMoreIcon,
   Favorite as FavoriteIcon,
+  Delete as DeleteIcon,
 } from "@mui/icons-material";
 import {
   Avatar,
@@ -14,18 +15,6 @@ import {
   IconButton,
   Toolbar,
   Typography,
-} from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2";
-import { useContext, useState } from "react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/ru";
-import { isLiked } from "../utils/posts";
-import { Delete as DeleteIcon } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import { UserContext } from "../contexts/current-user-conext";
-import EditIcon from "@mui/icons-material/Edit";
-import {
   Button,
   Dialog,
   DialogActions,
@@ -34,8 +23,16 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-// import { useContext } from "react";
-// import { useState } from "react";
+import Grid2 from "@mui/material/Unstable_Grid2";
+import { useContext, useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ru";
+import { isLiked } from "../utils/posts";
+import { Link } from "react-router-dom";
+import { UserContext } from "../contexts/current-user-conext";
+import EditIcon from "@mui/icons-material/Edit";
+import CommentIcon from "@mui/icons-material/Comment";
 import { useForm } from "react-hook-form";
 
 dayjs.locale("ru");
@@ -50,6 +47,7 @@ export const Post = ({
   author,
   likes,
   _id,
+  comments,
   onPostLike,
   onDelete,
   heightImg,
@@ -60,6 +58,7 @@ export const Post = ({
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const [imageUrl, setImageUrl] = useState(image);
 
   const like = isLiked(likes, currentUser?._id);
   const canDelete = currentUser?._id === author?._id;
@@ -70,6 +69,7 @@ export const Post = ({
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -90,7 +90,6 @@ export const Post = ({
     }
     onEdit({ _id, ...data });
     handleClose();
-    reset();
   };
 
   function handleClickButtonLike() {
@@ -116,19 +115,36 @@ export const Post = ({
             action={
               canDelete && (
                 <>
-                  <IconButton onClick={handleOpen}>
-                    <EditIcon sx={{ color: "lightgray" }} />
+                  <IconButton onClick={handleOpen} disableRipple>
+                    <EditIcon sx={{ color: "darkgray" }} />
                   </IconButton>
-                  <IconButton aria-label="settings" onClick={handleClickDelete}>
-                    <DeleteIcon sx={{ color: "lightgray" }} />
+                  <IconButton
+                    aria-label="settings"
+                    onClick={handleClickDelete}
+                    disableRipple
+                  >
+                    <DeleteIcon sx={{ color: "darkgray" }} />
                   </IconButton>
                 </>
               )
             }
             title={shortName?.join(" ")}
-            subheader={currentUser?.about}
+            subheader={author?.about}
           />
           <Link to={`/postpage/${_id}`} style={{ textDecoration: "none" }}>
+            <Box
+              mb={1}
+              mr={1}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "end",
+              }}
+            >
+              <Typography variant="body2" color="text.primary" component="p">
+                {dayjs(created_at).fromNow()}
+              </Typography>
+            </Box>
             <CardMedia
               component="img"
               image={image}
@@ -144,14 +160,21 @@ export const Post = ({
               >
                 {title}
               </Typography>
-              <Typography
-                variant="body2"
-                color="text.primary"
-                component="p"
-                noWrap
-              >
-                {text}
-              </Typography>
+              {heightImg === 194 && (
+                <Typography
+                  variant="body2"
+                  color="text.primary"
+                  component="p"
+                  noWrap
+                >
+                  {text}
+                </Typography>
+              )}
+              {heightImg === "auto" && (
+                <Typography variant="body2" color="text.primary" component="p">
+                  {text}
+                </Typography>
+              )}
               <Toolbar />
               <Typography
                 variant="body2"
@@ -163,36 +186,48 @@ export const Post = ({
               </Typography>
             </CardContent>
           </Link>
-          <CardActions disableSpacing sx={{ marginTop: "auto" }}>
-            <IconButton
-              aria-label="add to favorites"
-              onClick={handleClickButtonLike}
-            >
-              <FavoriteIcon sx={{ color: like ? "red" : "lightgray" }} />
-            </IconButton>
-            <Typography sx={{ marginLeft: "6px" }}>{likes?.length}</Typography>
-            <Typography
-              variant="body2"
-              color="text.primary"
-              component="p"
-              sx={{ marginLeft: "60px" }}
-            >
-              {dayjs(created_at).fromNow()}
-            </Typography>
-            <IconButton
-              sx={{
-                transform: !expanded ? "rotate(0deg)" : "rotate(180deg)",
-                marginLeft: "auto",
-              }}
-              onClick={handleExpandClick}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
+          <CardActions
+            disableSpacing
+            sx={{
+              marginTop: "auto",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton
+                aria-label="add to favorites"
+                onClick={handleClickButtonLike}
+                disableRipple
+              >
+                <FavoriteIcon sx={{ color: like ? "red" : "darkgray" }} />
+              </IconButton>
+              <Typography ml={"5px"}>{likes?.length}</Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {!!comments?.length && (
+                <>
+                  <CommentIcon />
+                  <IconButton
+                    sx={{
+                      transform: !expanded ? "rotate(0deg)" : "rotate(180deg)",
+                    }}
+                    onClick={handleExpandClick}
+                    disableRipple
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </>
+              )}
+            </Box>
           </CardActions>
-
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <Typography paragraph>{text}</Typography>
+              {comments?.map((item) => (
+                <p key={item._id}>
+                  {item.author.name}: {item.text}
+                </p>
+              ))}
             </CardContent>
           </Collapse>
         </Card>
@@ -208,40 +243,51 @@ export const Post = ({
             <Box mb={1}>
               <DialogContentText>You can change your post</DialogContentText>
             </Box>
-            <Box mb={2}>
-              <TextField
-                autoFocus
-                autoComplete="image"
-                {...register("image", {
-                  required: true,
-                  pattern: {
-                    value:
-                      /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi,
-                  },
-                })}
-                margin="dense"
-                id="url"
-                label="Image Url"
-                type="text"
-                fullWidth
-                error={!!errors.image}
-                helperText={errors?.image ? errors.image.message : null}
-              />
-            </Box>
             <TextField
-              {...register("title", { required: true })}
+              autoFocus
+              autoComplete="image"
+              {...register("image", {
+                required: true,
+                pattern: {
+                  value:
+                    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi,
+                },
+              })}
+              margin="dense"
+              id="url"
+              label="Image Url"
+              type="text"
+              onBlur={() => setImageUrl(getValues("image"))}
+              defaultValue={image}
+              fullWidth
+              error={!!errors.image}
+              helperText={errors?.image ? errors.image.message : null}
+            />
+            {imageUrl && (
+              <CardMedia component="img" image={imageUrl} alt={title} />
+            )}
+            <TextField
+              {...register("title", {
+                required: true,
+                minLength: 2,
+              })}
               margin="dense"
               id="title"
               label="Post title"
               type="text"
+              defaultValue={title}
               fullWidth
             />
             <TextField
-              {...register("text", { required: true })}
+              {...register("text", {
+                required: true,
+                minLength: 2,
+              })}
               margin="dense"
               id="text"
               label="Post text"
               type="text"
+              defaultValue={text}
               fullWidth
             />
             <TextField
@@ -250,6 +296,7 @@ export const Post = ({
               id="tags"
               label="Tags, plese enter separated by commas"
               type="text"
+              defaultValue={tags?.join(", ")}
               fullWidth
             />
           </DialogContent>

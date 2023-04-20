@@ -1,4 +1,4 @@
-import { Pagination, Stack } from "@mui/material";
+import { Box, Pagination, Stack, Typography } from "@mui/material";
 import { PostList } from "../components/postlist";
 
 export const MainPage = ({
@@ -8,6 +8,7 @@ export const MainPage = ({
   handlePostEdit,
   page,
   pageQty,
+  postsQty,
   setPage,
 }) => {
   return (
@@ -37,6 +38,9 @@ export const MainPage = ({
           />
         )}
       </Stack>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Typography>Total posts: {postsQty}</Typography>
+      </Box>
     </>
   );
 };
